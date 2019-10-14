@@ -3,7 +3,8 @@ by: Jonathan Rehuel Lewerissa - 05111640000105
 
 1. Desain dan Implementasi Infrastruktur
   * Desain Infrastruktur Basis Data Terdistribusi
-  ![Skema Desain Infrastruktur](/img/schema.jpg)
+  
+    ![Skema Desain Infrastruktur](img/schema.jpg)
     * Spesifikasi server
       * Server Database - 3 unit
         * (192.168.16.105, 192.168.16.106, 192.168.16.107 )
@@ -191,7 +192,7 @@ by: Jonathan Rehuel Lewerissa - 05111640000105
 
           Berikut adalah screenshoot setelah semua konfigurasi berhasil. Command yang dijalankan adalah `SELECT * FROM performance_schema.replication_group_members;` pada MySQL console untuk melihat hasil konfigurasi.
 
-          ![Initial Mysql Status](/img/mysql_group_replication_status.png)
+          ![Initial Mysql Status](img/mysql_group_replication_status.png)
 
       2. Instalasi dan konfigurasi ProxySQL
         
@@ -244,7 +245,7 @@ by: Jonathan Rehuel Lewerissa - 05111640000105
             SAVE MYSQL USERS TO DISK;
             ```
 
-            ![ProxySQl Hasil](/img/proxy_initial_config.png)
+            ![ProxySQl Hasil](img/proxy_initial_config.png)
 
             Konfigurasi diatas adalah konfigurasi untuk menyambungkan ProxySQL dengan MySQL. Adapun user yang digunakan untuk tugas ini adalah `reservasiuser` dengan password `reservasipassword`.
 
@@ -328,22 +329,22 @@ by: Jonathan Rehuel Lewerissa - 05111640000105
 
     ![Database after migration](img/member_after_migration.png)
 
-    ![Web after installation](/img/working_app_login.png)
-    ![Dashboard after installation](/img/working_app_dashboard.png)
+    ![Web after installation](img/working_app_login.png)
+    ![Dashboard after installation](img/working_app_dashboard.png)
 
 3. Simulasi Fail-over
 
 Pada simulasi failover, pertama saya melakukan presensi untuk satu orang. Data tersebut kemudian masuk ke semua database.
 
-![Initial](/img/initial.png)
+![Initial](img/initial.png)
 
 Kemudian, saya mematikan sebuah node, dalam kasus ini node DB2.
 
-![Dead](/img/dead.png)
+![Dead](img/dead.png)
 
 Kemudian, saya melakukan penambahan presensi baru.
 
-![Mutation](/img/mutation.png)
+![Mutation](img/mutation.png)
 ![Mutation DB](img/mutation_db.png)
 
 Setelah itu, saya menghidupkan kembali node DB2, kemudian melakukan query
@@ -354,8 +355,8 @@ Setelah itu, saya menghidupkan kembali node DB2, kemudian melakukan query
 1. Referensi
 
     MySQL Replication:
-    https://www.digitalocean.com/community/tutorials/how-to-configure-mysql-group-replication-on-ubuntu-16-04
-    https://dev.mysql.com/doc/refman/5.7/en/group-replication.html
+    * https://www.digitalocean.com/community/tutorials/how-to-configure-mysql-group-replication-on-ubuntu-16-04
+    * https://dev.mysql.com/doc/refman/5.7/en/group-replication.html
 
     ProxySQL:
-    https://www.digitalocean.com/community/tutorials/how-to-use-proxysql-as-a-load-balancer-for-mysql-on-ubuntu-16-04
+    * https://www.digitalocean.com/community/tutorials/how-to-use-proxysql-as-a-load-balancer-for-mysql-on-ubuntu-16-04
