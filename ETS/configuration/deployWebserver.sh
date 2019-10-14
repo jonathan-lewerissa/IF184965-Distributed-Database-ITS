@@ -24,10 +24,8 @@ composer install
 php artisan key:generate
 
 sudo chown -R $USER:www-data storage
-sudo chown $USER:www-data storage/logs/laravel.log
 sudo chown -R $USER:www-data bootstrap/cache
 
 sudo chmod -R 775 storage
-sudo chmod 775 storage/logs/laravel.log
 sudo chmod -R 775 bootstrap/cache
 

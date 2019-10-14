@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
     proxy.vm.hostname = "proxy"
     proxy.vm.box = "bento/ubuntu-16.04"
     proxy.vm.network "private_network", ip: "192.168.16.108"
-    proxy.vm.network "public_network",  bridge: "Ethernet 2"
+    # proxy.vm.network "public_network",  bridge: "Ethernet 2"
     
     proxy.vm.provider "virtualbox" do |vb|
       vb.name = "proxy"

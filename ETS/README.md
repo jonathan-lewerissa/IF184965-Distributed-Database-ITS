@@ -3,7 +3,7 @@ by: Jonathan Rehuel Lewerissa - 05111640000105
 
 1. Desain dan Implementasi Infrastruktur
   * Desain Infrastruktur Basis Data Terdistribusi
-  ![Skema Desain Infrastruktur](/ETS/img/schema.jpg "Gambar Desain")
+  ![Skema Desain Infrastruktur](/img/schema.jpg)
     * Spesifikasi server
       * Server Database - 3 unit
         * (192.168.16.105, 192.168.16.106, 192.168.16.107 )
@@ -189,6 +189,10 @@ by: Jonathan Rehuel Lewerissa - 05111640000105
           INSTALL PLUGIN group_replication SONAME 'group_replication.so';
           ```
 
+          Berikut adalah screenshoot setelah semua konfigurasi berhasil. Command yang dijalankan adalah `SELECT * FROM performance_schema.replication_group_members;` pada MySQL console untuk melihat hasil konfigurasi.
+
+          ![Initial Mysql Status](/img/mysql_group_replication_status.png)
+
       2. Instalasi dan konfigurasi ProxySQL
         
           Berikut adalah potongan konfigurasi dari [Vagrantfile](/ETS/Vagrantfile) untuk instalasi ProxySQL.
@@ -210,14 +214,72 @@ by: Jonathan Rehuel Lewerissa - 05111640000105
             end
             ```
 
+            Setelah node ProxySQL berhasil dinyalakan oleh vagrant, kita perlu melakukan koneksi ke node tersebut dengan command `vagrant ssh proxy` untuk melakukan konfigurasi lanjutan.
+
+            Kita perlu melakukan import konfigurasi untuk menyambungkan ProxySQL dengan database MySQL yang telah dilakukan group replication. File konfigurasi yang perlu di-import dengan command
+            ```bash
+            mysql -u admin -padmin -h 127.0.0.1 -P 6032 < /vagrant/sql_scripts/proxysql.sql
+            ```
+            adalah sebagai berikut.
+            ```sql
+            UPDATE global_variables SET variable_value='admin:password' WHERE variable_name='admin-admin_credentials';
+            LOAD ADMIN VARIABLES TO RUNTIME;
+            SAVE ADMIN VARIABLES TO DISK;
+
+            UPDATE global_variables SET variable_value='monitor' WHERE variable_name='mysql-monitor_username';
+            LOAD MYSQL VARIABLES TO RUNTIME;
+            SAVE MYSQL VARIABLES TO DISK;
+
+            INSERT INTO mysql_group_replication_hostgroups (writer_hostgroup, backup_writer_hostgroup, reader_hostgroup, offline_hostgroup, active, max_writers, writer_is_also_reader, max_transactions_behind) VALUES (2, 4, 3, 1, 1, 3, 1, 100);
+
+            INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (2, '192.168.16.105', 3306);
+            INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (2, '192.168.16.106', 3306);
+            INSERT INTO mysql_servers(hostgroup_id, hostname, port) VALUES (2, '192.168.16.107', 3306);
+
+            LOAD MYSQL SERVERS TO RUNTIME;
+            SAVE MYSQL SERVERS TO DISK;
+
+            INSERT INTO mysql_users(username, password, default_hostgroup) VALUES ('reservasiuser', 'reservasipassword', 2);
+            LOAD MYSQL USERS TO RUNTIME;
+            SAVE MYSQL USERS TO DISK;
+            ```
+
+            ![ProxySQl Hasil](/img/proxy_initial_config.png)
+
+            Konfigurasi diatas adalah konfigurasi untuk menyambungkan ProxySQL dengan MySQL. Adapun user yang digunakan untuk tugas ini adalah `reservasiuser` dengan password `reservasipassword`.
+
       3. Instalasi dan konfigurasi Webserver
+          
+          Pertama kita perlu melakukan `vagrant up webserver`. Hal ini dilakukan untuk membuat VM yang berisi aplikasi webserver serta melakukan *provisioning* awal untuk mengatur webserver dan aplikasi. Hal-hal yang dilakukan saat *provisioning* adalah menginstall NGINX, PHP, serta Composer.
+
+          Berikut adalah [potongan kode](/configuration/deployWebserver.sh) untuk melakukan *provisioning*.
+
+          ```bash
+          # Changing the APT sources.list to kambing.ui.ac.id
+          sudo cp '/vagrant/configuration/sources.list' '/etc/apt/sources.list'
+
+          sudo apt-get install software-properties-common -y
+          sudo add-apt-repository ppa:ondrej/php -y
+
+          # Updating the repo with the new sources
+          sudo apt-get update -y
+
+          sudo apt install nginx php7.2-fpm php7.2-common php7.2-mbstring php7.2-xmlrpc php7.2-soap php7.2-gd php7.2-xml php7.2-intl php7.2-mysql php7.2-cli php7.2-zip php7.2-curl -y
+
+          sudo cp /vagrant/webserver_config/default /etc/nginx/sites-available/default -f
+
+          cd /tmp
+          wget https://raw.githubusercontent.com/composer/getcomposer.org/76a7060ccb93902cd7576b67264ad91c8a2700e2/web/installer -O - -q | php -- --quiet
+          sudo mv composer.phar /usr/local/bin/composer
+          ```
 
 2. Penggunaan basis data terdistribusi dalam aplikasi
-  * Instalasi aplikasi
-    
-    Pertama kita perlu melakukan `vagrant up webserver`. Hal ini dilakukan untuk membuat VM yang berisi aplikasi webserver serta melakukan *provisioning* awal untuk mengatur webserver dan aplikasi. Hal-hal yang dilakukan saat *provisioning* adalah instalasi NGINX, PHP dan Composer, melakukan *clone project*, serta melakukan konfigurasi webserver dan aplikasi.
 
-    Berikut adalah potongan [*script*](/deployWebserver.sh) untuk melakukan *provisioning*.
+    Aplikasi yang akan digunakan dalam tugas ini adalah [*Aplikasi Presensi*](https://github.com/jonathan-lewerissa/web-pmk-its) Persekutuan Mahasiswa Kristen ITS. Aplikasi ini digunakan untuk melakukan presensi kegiatan minggu di lingkungan PMK ITS. Tugas ini sudah menyediakan file konfigurasi .env yang dapat disalin ke direktori aplikasi presensi.
+
+  * Instalasi dan konfigurasi aplikasi
+    
+    Berikut adalah potongan [*script*](/deployWebserver.sh) untuk melakukan instalasi (*clone project*) dan konfigurasi aplikasi.
 
     ```bash
     sudo cp /vagrant/webserver_config/default /etc/nginx/sites-available/default -f
@@ -243,13 +305,53 @@ by: Jonathan Rehuel Lewerissa - 05111640000105
     sudo chmod -R 775 bootstrap/cache
     ```
 
-  * Konfigurasi aplikasi
-  * Deskripsi Aplikasi
-  * Konfigurasi aplikasi berkaitan dengan database   
+    Kemudian, konfigurasi database yang berkaitan dengan aplikasi terdapat pada file [.env](/webserver_config/.env.deploy) dimana parameter database diubah konfigurasinya.
+    ```
+    DB_CONNECTION=mysql
+    DB_HOST=192.168.16.108
+    DB_PORT=6033
+    DB_DATABASE=reservasi
+    DB_USERNAME=reservasiuser
+    DB_PASSWORD=reservasipassword
+
+    FRONTDB_CONNECTION=mysql
+    FRONTDB_HOST=192.168.16.108
+    FRONTDB_PORT=6033
+    FRONTDB_DATABASE=reservasi
+    FRONTDB_USERNAME=reservasiuser
+    FRONTDB_PASSWORD=reservasipassword
+    ```
+
+    Kemudian, ditemukan error yang berkaitan dengan aplikasi, dimana aplikasi tidak dapat membaca *foreign-key* pada database, sehingga parameter *foreign-key* dihapus secara manual pada *database*.
+
+    ![Migrate command](img/artisan_migrate.png)
+
+    ![Database after migration](img/member_after_migration.png)
+
+    ![Web after installation](/img/working_app_login.png)
+    ![Dashboard after installation](/img/working_app_dashboard.png)
 
 3. Simulasi Fail-over
 
-4. Referensi
+Pada simulasi failover, pertama saya melakukan presensi untuk satu orang. Data tersebut kemudian masuk ke semua database.
+
+![Initial](/img/initial.png)
+
+Kemudian, saya mematikan sebuah node, dalam kasus ini node DB2.
+
+![Dead](/img/dead.png)
+
+Kemudian, saya melakukan penambahan presensi baru.
+
+![Mutation](/img/mutation.png)
+![Mutation DB](img/mutation_db.png)
+
+Setelah itu, saya menghidupkan kembali node DB2, kemudian melakukan query
+
+![Alive](img/finally.png)
+
+
+1. Referensi
 
     MySQL Replication:
     https://www.digitalocean.com/community/tutorials/how-to-configure-mysql-group-replication-on-ubuntu-16-04
