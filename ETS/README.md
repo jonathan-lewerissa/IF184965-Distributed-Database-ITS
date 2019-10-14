@@ -31,9 +31,185 @@ by: Jonathan Rehuel Lewerissa - 05111640000105
 
       1. Instalasi dan konfigurasi basis data terdistribusi
 
-          Pertama kita 
+          Pertama kita akan melakukan `vagrant up` untuk melakukan instalasi dan provisioning. Kemudian setelah semua selesai terinstall, maka kita akan melakukan `vagrant ssh [nama VM]` untuk mengakses VM yang sudah kita buat.
+
+          Berikut adalah potongan konfigurasi dari [Vagrantfile](/ETS/Vagrantfile) untuk instalasi database.
+
+          ```ruby
+          # MySQL Cluster dengan 3 node
+          (1..3).each do |i|
+            config.vm.define "db#{i}" do |node|
+              node.vm.hostname = "db#{i}"
+              node.vm.box = "bento/ubuntu-16.04"
+              node.vm.network "private_network", ip: "192.168.16.#{104+i}"
+              
+              node.vm.provider "virtualbox" do |vb|
+                vb.name = "db#{i}"
+                vb.gui = false
+                vb.memory = "512"
+              end
+          
+              node.vm.provision "shell", path: "deployMySQL1#{i}.sh", privileged: false
+            end
+          end
+          ```
+
+          Berikut adalah file konfigurasi untuk konfigurasi database yang digunakan sebagai [*bootstrap*](/ETS/deployMySQL11.sh) dan sebagai [*member*](/ETS/deployMySQL12.sh). Terdapat penambahan script untuk konfigurasi group replication MySQL dibawah.
+
+          ```bash
+          # Changing the APT sources.list to kambing.ui.ac.id
+          sudo cp '/vagrant/sources.list' '/etc/apt/sources.list'
+
+          # Updating the repo with the new sources
+          sudo apt-get update -y
+
+          # Install required library
+          sudo apt-get install libaio1
+          sudo apt-get install libmecab2
+
+          # Get MySQL binaries
+          curl -OL https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-common_5.7.23-1ubuntu16.04_amd64.deb
+          curl -OL https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-community-client_5.7.23-1ubuntu16.04_amd64.deb
+          curl -OL https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-client_5.7.23-1ubuntu16.04_amd64.deb
+          curl -OL https://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-community-server_5.7.23-1ubuntu16.04_amd64.deb
+
+          # Setting input for installation
+          sudo debconf-set-selections <<< 'mysql-community-server mysql-community-server/root-pass password admin'
+          sudo debconf-set-selections <<< 'mysql-community-server mysql-community-server/re-root-pass password admin'
+
+          # Install MySQL Community Server
+          sudo dpkg -i mysql-common_5.7.23-1ubuntu16.04_amd64.deb
+          sudo dpkg -i mysql-community-client_5.7.23-1ubuntu16.04_amd64.deb
+          sudo dpkg -i mysql-client_5.7.23-1ubuntu16.04_amd64.deb
+          sudo dpkg -i mysql-community-server_5.7.23-1ubuntu16.04_amd64.deb
+
+          # Allow port on firewall
+          sudo ufw allow 33061
+          sudo ufw allow 3306
+
+          # Copy MySQL configurations
+          sudo cp /vagrant/my11.cnf /etc/mysql/my.cnf
+
+          # Restart MySQL services
+          sudo service mysql restart
+
+          # Cluster bootstrapping untuk database pertama
+          sudo mysql -u root -padmin < /vagrant/cluster_bootstrap.sql
+          sudo mysql -u root -padmin < /vagrant/addition_to_sys.sql
+          sudo mysql -u root -padmin < /vagrant/create_proxysql_user.sql
+
+          # Cluster member untuk database yang lain
+          sudo mysql -u root -padmin < /vagrant/cluster_member.sql
+          ```
+
+          Berikut adalah [file konfigurasi MySQL](/ETS/my11.cnf) untuk melakukan *group replication*. Adapun pengubahan yang dilakukan adalah mengubah *IP Address* yang digunakan agar sesuai dengan skema
+
+          ```sql
+          #
+          # The MySQL database server configuration file.
+          #
+          # You can copy this to one of:
+          # - "/etc/mysql/my.cnf" to set global options,
+          # - "~/.my.cnf" to set user-specific options.
+          # 
+          # One can use all long options that the program supports.
+          # Run program with --help to get a list of available options and with
+          # --print-defaults to see which it would actually understand and use.
+          #
+          # For explanations see
+          # http://dev.mysql.com/doc/mysql/en/server-system-variables.html
+
+          #
+          # * IMPORTANT: Additional settings that can override those from this file!
+          #   The files must end with '.cnf', otherwise they'll be ignored.
+          #
+
+          !includedir /etc/mysql/conf.d/
+          !includedir /etc/mysql/mysql.conf.d/
+
+          [mysqld]
+
+          # General replication settings
+          gtid_mode = ON
+          enforce_gtid_consistency = ON
+          master_info_repository = TABLE
+          relay_log_info_repository = TABLE
+          binlog_checksum = NONE
+          log_slave_updates = ON
+          log_bin = binlog
+          binlog_format = ROW
+          transaction_write_set_extraction = XXHASH64
+          loose-group_replication_bootstrap_group = OFF
+          loose-group_replication_start_on_boot = ON
+          loose-group_replication_ssl_mode = REQUIRED
+          loose-group_replication_recovery_use_ssl = 1
+
+          # Shared replication group configuration
+          loose-group_replication_group_name = "8f22f846-9922-4139-b2b7-097d185a93cb"
+          loose-group_replication_ip_whitelist = "192.168.16.105, 192.168.16.106, 192.168.16.107"
+          loose-group_replication_group_seeds = "192.168.16.105:33061, 192.168.16.106:33061, 192.168.16.107:33061"
+
+          # Single or Multi-primary mode? Uncomment these two lines
+          # for multi-primary mode, where any host can accept writes
+          loose-group_replication_single_primary_mode = OFF
+          loose-group_replication_enforce_update_everywhere_checks = ON
+
+          # Host specific replication configuration
+          server_id = 11
+          bind-address = "192.168.16.105"
+          report_host = "192.168.16.105"
+          loose-group_replication_local_address = "192.168.16.105:33061"
+          ```
+
+          Berikut adalah [file konfigurasi](/ETS/cluster_bootstrap.sql) untuk melakukan *bootstrap* pada MySQL Group Replication
+          ```sql
+          SET SQL_LOG_BIN=0;
+          CREATE USER 'repl'@'%' IDENTIFIED BY 'clusterpassword' REQUIRE SSL;
+          GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%';
+          FLUSH PRIVILEGES;
+          SET SQL_LOG_BIN=1;
+          CHANGE MASTER TO MASTER_USER='repl', MASTER_PASSWORD='clusterpassword' FOR CHANNEL 'group_replication_recovery';
+          INSTALL PLUGIN group_replication SONAME 'group_replication.so';
+
+          SET GLOBAL group_replication_bootstrap_group=ON;
+          START GROUP_REPLICATION;
+          SET GLOBAL group_replication_bootstrap_group=OFF;
+
+          CREATE DATABASE reservasi;
+          ```
+
+          Berikut adalah [file konfigurasi](/ETS/cluster_member.sql) untuk menambah *member* pada MySQL Group Replication.
+          ```sql
+          SET SQL_LOG_BIN=0;
+          CREATE USER 'repl'@'%' IDENTIFIED BY 'clusterpassword' REQUIRE SSL;
+          GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%';
+          FLUSH PRIVILEGES;
+          SET SQL_LOG_BIN=1;
+          CHANGE MASTER TO MASTER_USER='repl', MASTER_PASSWORD='clusterpassword' FOR CHANNEL 'group_replication_recovery';
+          INSTALL PLUGIN group_replication SONAME 'group_replication.so';
+          ```
 
       2. Instalasi dan konfigurasi ProxySQL
+        
+          Berikut adalah potongan konfigurasi dari [Vagrantfile](/ETS/Vagrantfile) untuk instalasi ProxySQL.
+
+            ```ruby
+            config.vm.define "proxy" do |proxy|
+              proxy.vm.hostname = "proxy"
+              proxy.vm.box = "bento/ubuntu-16.04"
+              proxy.vm.network "private_network", ip: "192.168.16.108"
+              #proxy.vm.network "public_network",  bridge: "Ethernet 2"
+              
+              proxy.vm.provider "virtualbox" do |vb|
+                vb.name = "proxy"
+                vb.gui = false
+                vb.memory = "512"
+              end
+
+              proxy.vm.provision "shell", path: "deployProxySQL.sh", privileged: false
+            end
+            ```
+
       3. Instalasi dan konfigurasi Webserver
 
 2. Penggunaan basis data terdistribusi dalam aplikasi
