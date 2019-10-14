@@ -31,7 +31,7 @@ by: Jonathan Rehuel Lewerissa - 05111640000105
 
       1. Instalasi dan konfigurasi basis data terdistribusi
 
-          Pertama kita 
+          Pertama kita perlu melakukan instalasi melalui vagrant.
 
       2. Instalasi dan konfigurasi ProxySQL
       3. Instalasi dan konfigurasi Webserver
