@@ -214,8 +214,46 @@ by: Jonathan Rehuel Lewerissa - 05111640000105
 
 2. Penggunaan basis data terdistribusi dalam aplikasi
   * Instalasi aplikasi
+    
+    Pertama kita perlu melakukan `vagrant up webserver`. Hal ini dilakukan untuk membuat VM yang berisi aplikasi webserver serta melakukan *provisioning* awal untuk mengatur webserver dan aplikasi. Hal-hal yang dilakukan saat *provisioning* adalah instalasi NGINX, PHP dan Composer, melakukan *clone project*, serta melakukan konfigurasi webserver dan aplikasi.
+
+    Berikut adalah potongan [*script*](/deployWebserver.sh) untuk melakukan *provisioning*.
+
+    ```bash
+    sudo cp /vagrant/webserver_config/default /etc/nginx/sites-available/default -f
+
+    cd /tmp
+    wget https://raw.githubusercontent.com/composer/getcomposer.org/76a7060ccb93902cd7576b67264ad91c8a2700e2/web/installer -O - -q | php -- --quiet
+    sudo mv composer.phar /usr/local/bin/composer
+
+    cd ~
+    git clone https://github.com/jonathan-lewerissa/web-pmk-its.git
+    cd ~/web-pmk-its
+    cp /vagrant/webserver_config/.env.deploy /home/vagrant/web-pmk-its/.env
+    composer install
+
+    php artisan key:generate
+
+    sudo chown -R $USER:www-data storage
+    sudo chown $USER:www-data storage/logs/laravel.log
+    sudo chown -R $USER:www-data bootstrap/cache
+
+    sudo chmod -R 775 storage
+    sudo chmod 775 storage/logs/laravel.log
+    sudo chmod -R 775 bootstrap/cache
+    ```
+
   * Konfigurasi aplikasi
   * Deskripsi Aplikasi
   * Konfigurasi aplikasi berkaitan dengan database   
 
 3. Simulasi Fail-over
+
+4. Referensi
+
+    MySQL Replication:
+    https://www.digitalocean.com/community/tutorials/how-to-configure-mysql-group-replication-on-ubuntu-16-04
+    https://dev.mysql.com/doc/refman/5.7/en/group-replication.html
+
+    ProxySQL:
+    https://www.digitalocean.com/community/tutorials/how-to-use-proxysql-as-a-load-balancer-for-mysql-on-ubuntu-16-04
