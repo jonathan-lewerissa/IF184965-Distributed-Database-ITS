@@ -1,10 +1,5 @@
 # Add hostname
-sudo bash -c \\"echo '192.168.33.11 mongo-config-1' >> /etc/hosts\\"
-sudo bash -c \\"echo '192.168.33.12 mongo-config-2' >> /etc/hosts\\"
-sudo bash -c \\"echo '192.168.33.21 mongo-query-router' >> /etc/hosts\\"
-sudo bash -c \\"echo '192.168.33.31 mongo-shard-1' >> /etc/hosts\\"
-sudo bash -c \\"echo '192.168.33.32 mongo-shard-2' >> /etc/hosts\\"
-sudo bash -c \\"echo '192.168.33.33 mongo-shard-3' >> /etc/hosts\\"
+sudo cp /vagrant/sources/hosts /etc/hosts
 
 # Copy APT sources list
 sudo cp /vagrant/sources/sources.list /etc/apt/
@@ -21,17 +16,49 @@ sudo apt-get update
 # Install MongoDB
 sudo apt-get install -y mongodb-org
 
+sudo mkdir /opt/mongo
+sudo cp /vagrant/sources/mongo-keyfile /opt/mongo
+sudo chmod 400 /opt/mongo/mongo-keyfile
+sudo chown mongodb:mongodb /opt/mongo/mongo-keyfile
+
 # Start MongoDB
 sudo service mongod start
 
-# Create master user for MongoDB
 if [[ $(hostname) == "mongo-config-1" ]]; then
-    cat /vagrant/provision/create-admin.sh | mongo
+    sudo cp /vagrant/config/mongod-config-1.conf /etc/mongod.conf
+    sudo service mongod restart
 fi
 
-if [[ $(hostname) != "mongo-query-router" ]]; then
-    sudo mkdir /opt/mongo
-    sudo cp /vagrant/sources/mongo-keyfile /opt/mongo
-    sudo chmod 400 /opt/mongo/mongo-keyfile
-    sudo chown mongodb:mongodb /opt/mongo/mongo-keyfile
+if [[ $(hostname) == "mongo-config-2" ]]; then
+    sudo cp /vagrant/config/mongod-config-2.conf /etc/mongod.conf
+    sudo service mongod restart
+
+    # mongo mongo-config-2:27019 < /vagrant/provision/mongo-config.sh
+fi
+
+if [[ $(hostname) == "mongo-query-router" ]]; then
+    sudo service mongod stop
+
+    sudo cp /vagrant/config/mongos-query-router.conf /etc/mongos.conf
+    sudo cp /vagrant/sources/mongos.service /lib/systemd/system/mongos.service
+
+    sudo systemctl enable mongos.service
+    sudo systemctl stop mongos
+fi
+
+if [[ $(hostname) == "mongo-shard-1" ]]; then
+    sudo cp /vagrant/config/mongo-shard-1.conf /etc/mongod.conf
+    sudo service mongod restart
+fi
+
+if [[ $(hostname) == "mongo-shard-2" ]]; then
+    sudo cp /vagrant/config/mongo-shard-2.conf /etc/mongod.conf
+    sudo service mongod restart
+fi
+
+if [[ $(hostname) == "mongo-shard-3" ]]; then
+    sudo cp /vagrant/config/mongo-shard-3.conf /etc/mongod.conf
+    sudo service mongod restart
+
+    # mongo mongo-query-router:27017 -u mongo-admin -p password --authenticationDatabase admin < /vagrant/provision/register-shard.sh
 fi
