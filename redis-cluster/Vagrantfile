@@ -1,0 +1,41 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+
+Vagrant.configure("2") do |config|
+
+  (1..3).each do |i|
+    config.vm.define "redis-#{i}" do |node|
+      node.vm.hostname = "redis-#{i}"
+      node.vm.box = "bento/ubuntu-18.04"
+      node.vm.network "private_network", ip: "192.168.16.#{104+i}"
+      
+      node.vm.provider "virtualbox" do |vb|
+        vb.name = "redis-#{i}"
+        vb.gui = false
+        vb.memory = "512"
+      end
+  
+      node.vm.provision "shell", path: "provision/provision-redis.sh", privileged: false
+    end
+  end
+
+  config.vm.define "mysql-db" do |proxy|
+    proxy.vm.hostname = "mysql-db"
+    proxy.vm.box = "bento/ubuntu-18.04"
+    proxy.vm.network "private_network", ip: "192.168.16.108"
+    
+    proxy.vm.provider "virtualbox" do |vb|
+      vb.name = "mysql-db"
+      vb.gui = false
+      vb.memory = "512"
+    end
+
+    proxy.vm.provision "shell", path: "provision/provision-mysql.sh", privileged: false
+  end
+
+end
