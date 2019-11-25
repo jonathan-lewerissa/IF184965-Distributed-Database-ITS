@@ -29,3 +29,11 @@ sudo ufw allow 3306
 
 # Restart MySQL services
 sudo service mysql restart
+
+sudo cp /vagrant/configuration/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
+
+sudo systemctl restart mysql
+
+# Create Database and User
+sudo bash /vagrant/provision/mysql-create-user.sh wordpressDB wordpress-user wordpress-password
+sudo bash /vagrant/provision/mysql-create-user.sh wordpressRedis wordpress-user wordpress-password
