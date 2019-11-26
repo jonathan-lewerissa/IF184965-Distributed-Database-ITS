@@ -1,0 +1,208 @@
+2019-11-26 06:59:40,357 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2019-11-26 06:59:40,367 INFO o.a.j.JMeter: Loading user properties from: C:\apache-jmeter-5.2\bin\user.properties
+2019-11-26 06:59:40,379 INFO o.a.j.JMeter: Loading system properties from: C:\apache-jmeter-5.2\bin\system.properties
+2019-11-26 06:59:40,389 INFO o.a.j.JMeter: Copyright (c) 1998-2019 The Apache Software Foundation
+2019-11-26 06:59:40,390 INFO o.a.j.JMeter: Version 5.2
+2019-11-26 06:59:40,390 INFO o.a.j.JMeter: java.version=1.8.0_231
+2019-11-26 06:59:40,390 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2019-11-26 06:59:40,390 INFO o.a.j.JMeter: os.name=Windows 10
+2019-11-26 06:59:40,390 INFO o.a.j.JMeter: os.arch=amd64
+2019-11-26 06:59:40,390 INFO o.a.j.JMeter: os.version=10.0
+2019-11-26 06:59:40,390 INFO o.a.j.JMeter: file.encoding=Cp1252
+2019-11-26 06:59:40,390 INFO o.a.j.JMeter: java.awt.headless=null
+2019-11-26 06:59:40,390 INFO o.a.j.JMeter: Max memory     =1073741824
+2019-11-26 06:59:40,390 INFO o.a.j.JMeter: Available Processors =6
+2019-11-26 06:59:40,394 INFO o.a.j.JMeter: Default Locale=English (EN)
+2019-11-26 06:59:40,394 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2019-11-26 06:59:40,394 INFO o.a.j.JMeter: JMeterHome=C:\apache-jmeter-5.2
+2019-11-26 06:59:40,394 INFO o.a.j.JMeter: user.dir  =C:\Users\exodus\Documents\IF184965-Distributed-Database-ITS\redis-cluster
+2019-11-26 06:59:40,394 INFO o.a.j.JMeter: PWD       =C:\Users\exodus\Documents\IF184965-Distributed-Database-ITS\redis-cluster
+2019-11-26 06:59:44,901 INFO o.a.j.JMeter: IP: 192.168.16.1 Name: exodus FullName: exodus
+2019-11-26 06:59:45,060 INFO o.a.j.g.a.LookAndFeelCommand: Installing Darcula LAF
+2019-11-26 06:59:45,072 INFO o.a.j.g.a.LookAndFeelCommand: Using look and feel: com.bulenkov.darcula.DarculaLaf [Darcula]
+2019-11-26 06:59:45,072 INFO o.a.j.JMeter: Setting LAF to: com.bulenkov.darcula.DarculaLaf
+2019-11-26 06:59:45,117 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
+2019-11-26 06:59:46,501 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-11-26 06:59:46,501 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-11-26 06:59:46,501 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-11-26 06:59:46,502 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2019-11-26 06:59:46,502 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2019-11-26 06:59:46,502 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2019-11-26 06:59:46,621 INFO o.a.j.e.KeyToolUtils: Exception checking for keytool existence, will return false, try another way.
+2019-11-26 06:59:46,840 INFO o.a.j.e.KeyToolUtils: keytool found at 'C:\Program Files\Java\jre1.8.0_231\bin\keytool'
+2019-11-26 06:59:46,841 INFO o.a.j.p.h.p.ProxyControl: HTTP(S) Test Script Recorder SSL Proxy will use keys that support embedded 3rd party resources in file C:\apache-jmeter-5.2\bin\proxyserver.jks
+2019-11-26 06:59:46,935 INFO o.a.j.s.FileServer: Default base='C:\Users\exodus\Documents\IF184965-Distributed-Database-ITS\redis-cluster'
+2019-11-26 06:59:47,423 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2019-11-26 06:59:47,424 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
+2019-11-26 06:59:47,424 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2019-11-26 06:59:47,424 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2019-11-26 07:10:12,743 INFO o.a.j.s.FileServer: Set new base='C:\Users\exodus\Documents\IF184965-Distributed-Database-ITS\redis-cluster\tests'
+2019-11-26 07:10:12,860 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2019-11-26 07:10:12,865 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2019-11-26 07:10:12,865 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
+2019-11-26 07:10:12,956 INFO o.a.j.e.StandardJMeterEngine: Running the test!
+2019-11-26 07:10:12,957 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2019-11-26 07:10:12,957 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2019-11-26 07:10:12,958 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
+2019-11-26 07:10:12,958 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
+2019-11-26 07:10:14,291 INFO o.a.j.g.u.JMeterMenuBar: setRunning(true, *local*)
+2019-11-26 07:10:14,484 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : non-redis
+2019-11-26 07:10:14,484 INFO o.a.j.e.StandardJMeterEngine: Starting 50 threads for group non-redis.
+2019-11-26 07:10:14,485 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2019-11-26 07:10:14,499 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=50 ramp-up=10 delayedStart=false
+2019-11-26 07:10:14,518 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-1
+2019-11-26 07:10:14,534 INFO o.a.j.t.ThreadGroup: Started thread group number 1
+2019-11-26 07:10:14,534 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
+2019-11-26 07:10:14,610 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = exodus
+2019-11-26 07:10:14,643 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
+2019-11-26 07:10:14,714 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-2
+2019-11-26 07:10:14,914 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-3
+2019-11-26 07:10:15,115 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-4
+2019-11-26 07:10:15,314 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-5
+2019-11-26 07:10:15,514 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-6
+2019-11-26 07:10:15,706 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-7
+2019-11-26 07:10:15,906 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-8
+2019-11-26 07:10:16,106 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-9
+2019-11-26 07:10:16,303 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-10
+2019-11-26 07:10:16,502 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-11
+2019-11-26 07:10:16,702 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-12
+2019-11-26 07:10:16,902 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-13
+2019-11-26 07:10:17,105 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-14
+2019-11-26 07:10:17,303 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-15
+2019-11-26 07:10:17,503 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-16
+2019-11-26 07:10:17,702 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-17
+2019-11-26 07:10:17,901 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-18
+2019-11-26 07:10:18,101 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-19
+2019-11-26 07:10:18,301 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-20
+2019-11-26 07:10:18,502 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-21
+2019-11-26 07:10:18,702 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-22
+2019-11-26 07:10:18,900 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-23
+2019-11-26 07:10:19,100 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-24
+2019-11-26 07:10:19,300 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-25
+2019-11-26 07:10:19,500 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-26
+2019-11-26 07:10:19,700 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-27
+2019-11-26 07:10:19,901 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-28
+2019-11-26 07:10:20,100 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-29
+2019-11-26 07:10:20,300 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-30
+2019-11-26 07:10:20,500 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-31
+2019-11-26 07:10:20,700 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-32
+2019-11-26 07:10:20,901 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-33
+2019-11-26 07:10:21,101 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-34
+2019-11-26 07:10:21,300 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-35
+2019-11-26 07:10:21,500 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-36
+2019-11-26 07:10:21,699 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-37
+2019-11-26 07:10:21,900 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-38
+2019-11-26 07:10:22,101 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-39
+2019-11-26 07:10:22,299 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-40
+2019-11-26 07:10:22,500 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-41
+2019-11-26 07:10:22,699 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-42
+2019-11-26 07:10:22,899 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-43
+2019-11-26 07:10:23,100 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-44
+2019-11-26 07:10:23,300 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-45
+2019-11-26 07:10:23,499 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-46
+2019-11-26 07:10:23,699 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-47
+2019-11-26 07:10:23,899 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-48
+2019-11-26 07:10:24,100 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-49
+2019-11-26 07:10:24,301 INFO o.a.j.t.JMeterThread: Thread started: non-redis 1-50
+2019-11-26 07:10:49,795 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-2
+2019-11-26 07:10:49,796 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-1
+2019-11-26 07:10:49,796 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-2
+2019-11-26 07:10:49,796 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-1
+2019-11-26 07:10:50,751 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-4
+2019-11-26 07:10:50,751 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-4
+2019-11-26 07:10:50,752 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-3
+2019-11-26 07:10:50,752 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-3
+2019-11-26 07:10:51,026 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-5
+2019-11-26 07:10:51,026 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-5
+2019-11-26 07:10:51,043 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-6
+2019-11-26 07:10:51,043 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-6
+2019-11-26 07:10:51,313 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-8
+2019-11-26 07:10:51,313 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-8
+2019-11-26 07:10:51,326 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-7
+2019-11-26 07:10:51,326 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-7
+2019-11-26 07:10:51,606 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-10
+2019-11-26 07:10:51,606 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-10
+2019-11-26 07:10:51,632 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-9
+2019-11-26 07:10:51,632 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-9
+2019-11-26 07:10:51,892 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-12
+2019-11-26 07:10:51,892 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-12
+2019-11-26 07:10:51,938 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-11
+2019-11-26 07:10:51,938 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-11
+2019-11-26 07:10:52,184 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-13
+2019-11-26 07:10:52,184 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-13
+2019-11-26 07:10:52,228 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-14
+2019-11-26 07:10:52,228 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-14
+2019-11-26 07:10:52,463 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-15
+2019-11-26 07:10:52,463 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-15
+2019-11-26 07:10:52,528 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-16
+2019-11-26 07:10:52,528 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-16
+2019-11-26 07:10:52,743 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-17
+2019-11-26 07:10:52,743 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-17
+2019-11-26 07:10:52,796 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-18
+2019-11-26 07:10:52,796 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-18
+2019-11-26 07:10:53,035 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-19
+2019-11-26 07:10:53,035 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-19
+2019-11-26 07:10:53,079 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-20
+2019-11-26 07:10:53,079 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-20
+2019-11-26 07:10:53,323 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-21
+2019-11-26 07:10:53,323 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-21
+2019-11-26 07:10:53,378 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-22
+2019-11-26 07:10:53,378 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-22
+2019-11-26 07:10:53,623 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-23
+2019-11-26 07:10:53,623 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-23
+2019-11-26 07:10:53,669 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-24
+2019-11-26 07:10:53,669 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-24
+2019-11-26 07:10:53,893 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-26
+2019-11-26 07:10:53,893 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-26
+2019-11-26 07:10:53,976 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-25
+2019-11-26 07:10:53,976 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-25
+2019-11-26 07:10:54,177 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-28
+2019-11-26 07:10:54,178 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-28
+2019-11-26 07:10:54,267 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-27
+2019-11-26 07:10:54,267 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-27
+2019-11-26 07:10:54,477 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-30
+2019-11-26 07:10:54,477 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-30
+2019-11-26 07:10:54,567 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-29
+2019-11-26 07:10:54,567 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-29
+2019-11-26 07:10:54,767 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-32
+2019-11-26 07:10:54,768 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-32
+2019-11-26 07:10:54,847 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-31
+2019-11-26 07:10:54,847 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-31
+2019-11-26 07:10:55,051 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-34
+2019-11-26 07:10:55,051 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-34
+2019-11-26 07:10:55,147 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-33
+2019-11-26 07:10:55,147 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-33
+2019-11-26 07:10:55,343 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-35
+2019-11-26 07:10:55,344 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-35
+2019-11-26 07:10:55,446 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-36
+2019-11-26 07:10:55,446 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-36
+2019-11-26 07:10:55,633 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-37
+2019-11-26 07:10:55,633 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-37
+2019-11-26 07:10:55,752 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-38
+2019-11-26 07:10:55,752 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-38
+2019-11-26 07:10:55,901 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-39
+2019-11-26 07:10:55,901 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-39
+2019-11-26 07:10:56,029 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-40
+2019-11-26 07:10:56,029 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-40
+2019-11-26 07:10:56,180 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-41
+2019-11-26 07:10:56,180 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-41
+2019-11-26 07:10:56,310 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-42
+2019-11-26 07:10:56,310 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-42
+2019-11-26 07:10:56,471 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-43
+2019-11-26 07:10:56,471 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-43
+2019-11-26 07:10:56,614 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-44
+2019-11-26 07:10:56,614 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-44
+2019-11-26 07:10:56,781 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-45
+2019-11-26 07:10:56,781 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-45
+2019-11-26 07:10:56,913 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-46
+2019-11-26 07:10:56,913 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-46
+2019-11-26 07:10:57,073 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-47
+2019-11-26 07:10:57,073 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-47
+2019-11-26 07:10:57,220 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-48
+2019-11-26 07:10:57,220 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-48
+2019-11-26 07:10:57,364 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-49
+2019-11-26 07:10:57,364 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-49
+2019-11-26 07:10:57,512 INFO o.a.j.t.JMeterThread: Thread is done: non-redis 1-50
+2019-11-26 07:10:57,512 INFO o.a.j.t.JMeterThread: Thread finished: non-redis 1-50
+2019-11-26 07:10:57,513 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
+2019-11-26 07:10:57,518 INFO o.a.j.g.u.JMeterMenuBar: setRunning(false, *local*)

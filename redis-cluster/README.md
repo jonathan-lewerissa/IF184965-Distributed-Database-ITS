@@ -29,7 +29,23 @@ Dikerjakan oleh **Jonathan Rehuel Lewerissa - 05111640000105**
 - Lakukan pula pengujian untuk menunjukkan bahwa proses fail over menggunakan Redis Sentinel berhasil. Caranya dengan mematikan salah satu server Redis dan mengecek siapa master node baru yang terpilih.
 
 ## Arsitektur Sistem
-Artistektur sistem yang digunakan pada tugas ini terdiri dari tiga buah *cache server* menggunakan Redis, sebuah server basis data menggunakan MySQL, serta sebuah webserver (nginx) yang menjalankan Wordpress.
+Artistektur sistem yang digunakan pada tugas ini terdiri dari tiga buah *cache server* menggunakan Redis, sebuah server basis data menggunakan MySQL, serta sebuah webserver (nginx) yang menjalankan 2 instance Wordpress.
+
+![Architecture](img/architecture.jpg)
+
+Adapun spesifikasi server adalah sebagai berikut
+- redis node (single instance)
+  - OS: `ubuntu-18.04`
+  - RAM: `512 MB`
+  - IP Address: `192.168.16.105`, `192.168.16.106`, `192.168.16.107`
+- MySQL Database Server
+  - OS: `ubuntu-18.04`
+  - RAM: `512 MB`
+  - IP Address: `192.168.16.108`
+- Webserver
+  - OS: Windows 10
+  - RAM: `8 GB`
+
 
 ## Implementasi
 
@@ -156,6 +172,7 @@ end
 
     # logfile "/opt/redis/redis-server/redis.log"
     ```
+
   - [`redis-slave.conf`](configuration/redis-slave.conf)
     ```bash
     protected-mode no
@@ -191,6 +208,7 @@ end
 
     # logfile "/opt/redis/redis-server/sentinel.log"
     ```
+
 - Eksekusi program
   
   Untuk menjalankan Redis server dan Sentinel, kita cukup melakukan dua command, yaitu
@@ -261,6 +279,19 @@ Pastikan untuk menambahkan konfigurasi tersebut sebelum bagian khusus developer.
 ## Pengujian
 
 ### Load Testing (JMeter)
+Berikut adalah hasil pengujian menggunakan JMeter dengan 50 koneksi
+
+![50 User Test](img/50-user.png)
+
+Berikut adalah hasil pengujian menggunakan JMeter dengan 205 koneksi
+
+![205 User Test](img/205-user.png)
+
+Berikut adalah hasil pengujian menggunakan JMeter dengan 305 koneksi
+
+![305 User Test](img/305-user.png)
+
+Kesimpulan yang didapat dari pengujian adalah bahwa ternyata implementasi menggunakan Redis menghasilkan nilai throughput yang lebih rendah. Hal ini disebabkan oleh *overhead* saat memanggil Redis server serta throughput yang tinggi pada server MySQL. Arsitektur ini kemungkinan akan optimal jika terdapat banyak instance Webserver Wordpress, atau jarak server MySQL cukup jauh sehingga terdapat overhead pada MySQL query.
 
 ### Failover Simulation
 Pada simulasi ini, yang pertama kali dilakukan adalah membuka `redis-cli`, kemudian memastikan bahwa server Redis master berada di `192.168.16.105`
