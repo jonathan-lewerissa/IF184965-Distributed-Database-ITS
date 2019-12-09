@@ -1,0 +1,51 @@
+Run on PD Server
+./tidb-v3.0-linux-amd64/bin/pd-server --name=pd1 \
+                --data-dir=pd \
+                --client-urls="http://192.168.16.105:2379" \
+                --peer-urls="http://192.168.16.105:2380" \
+                --initial-cluster="pd1=http://192.168.16.105:2380,pd2=http://192.168.16.106:2380,pd3=http://192.168.16.107:2380" \
+                --log-file=pd.log &
+
+./tidb-v3.0-linux-amd64/bin/pd-server --name=pd2 \
+                --data-dir=pd \
+                --client-urls="http://192.168.16.106:2379" \
+                --peer-urls="http://192.168.16.106:2380" \
+                --initial-cluster="pd1=http://192.168.16.105:2380,pd2=http://192.168.16.106:2380,pd3=http://192.168.16.107:2380" \
+                --log-file=pd.log &
+
+./tidb-v3.0-linux-amd64/bin/pd-server --name=pd3 \
+                --data-dir=pd \
+                --client-urls="http://192.168.16.107:2379" \
+                --peer-urls="http://192.168.16.107:2380" \
+                --initial-cluster="pd1=http://192.168.16.105:2380,pd2=http://192.168.16.106:2380,pd3=http://192.168.16.107:2380" \
+                --log-file=pd.log &
+======================================================
+
+Run on Tikv Server
+./tidb-v3.0-linux-amd64/bin/tikv-server --pd="192.168.16.105:2379,192.168.16.106:2379,192.168.16.107:2379" \
+                  --addr="192.168.16.108:2379" \
+                  --data-dir=tikv \
+                  --log-file=tikv.log &
+
+./tidb-v3.0-linux-amd64/bin/tikv-server --pd="192.168.16.105:2379,192.168.16.106:2379,192.168.16.107:2379" \
+                  --addr="192.168.16.109:2379" \
+                  --data-dir=tikv \
+                  --log-file=tikv.log &
+                  
+./tidb-v3.0-linux-amd64/bin/tikv-server --pd="192.168.16.105:2379,192.168.16.106:2379,192.168.16.107:2379" \
+                  --addr="192.168.16.110:2379" \
+                  --data-dir=tikv \
+                  --log-file=tikv.log &
+
+======================================================
+
+Run on TiDB Server
+./tidb-v3.0-linux-amd64/bin/tidb-server --store=tikv \
+                  --path="192.168.16.105:2379" \
+                  --log-file=tidb.log &
+
+======================================================
+
+Import data (jalankan pada node-1)
+
+./tidb-enterprise-tools-latest-linux-amd64/bin/loader -h 127.0.0.1 -u root -P 4000 -t 32 -d /vagrant/dataset-kickstarter-projects/test

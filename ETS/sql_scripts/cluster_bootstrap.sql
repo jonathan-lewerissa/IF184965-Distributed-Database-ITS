@@ -1,13 +1,3 @@
-SET SQL_LOG_BIN=0;
-CREATE USER 'repl'@'%' IDENTIFIED BY 'clusterpassword' REQUIRE SSL;
-GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%';
-FLUSH PRIVILEGES;
-SET SQL_LOG_BIN=1;
-CHANGE MASTER TO MASTER_USER='repl', MASTER_PASSWORD='clusterpassword' FOR CHANNEL 'group_replication_recovery';
-INSTALL PLUGIN group_replication SONAME 'group_replication.so';
-
-SET GLOBAL group_replication_bootstrap_group=ON;
-START GROUP_REPLICATION;
-SET GLOBAL group_replication_bootstrap_group=OFF;
-
-CREATE DATABASE reservasi;
+version https://git-lfs.github.com/spec/v1
+oid sha256:5cd7d3ecfc9f8ae2cd4872aea867b37cdbfb1d02bfea53a53b90a8b1e079b6da
+size 511
