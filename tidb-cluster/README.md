@@ -13,12 +13,24 @@ Jonathan Rehuel Lewerissa
     - [Uji Performa Sysbench](#uji-performa-sysbench)
     - [Uji Fail-over](#uji-fail-over)
   - [Monitoring Basis Data](#monitoring-basis-data)
+    - [Instalasi](#instalasi)
+    - [Konfigurasi Grafana](#konfigurasi-grafana)
 
 ## Deskripsi Tugas
+
+Tugas ini merupakan sebuah implementasi basis data terdistribusi menggunakan TiDB. Aplikasi yang akan digunakan pada tugas ini adalah aplikasi CRUD berbasis Laravel. Pengujian yang dilakukan meliputi pengujian menggunakan JMeter, Sysbench, dan uji coba fail-over. Tugas ini juga akan menggunakan tools monitoring menggunakan Grafana dan Prometheus.
 
 ## Desain dan Implementasi Arsitektur TiDB
 
 ### Desain Arsitektur TiDB
+![Diagram](img/diagram-eas.png)
+
+| | node-1 | node-2 | node-3 | node-4 | node-5 | node-6 |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Plugin | PD, TiDB, node_export, Prometheus, Grafana | PD, node_export | PD, node_export | TiKV, node_export | TiKV, node_export | TiKV, node_export |
+| OS | CentOS 7 | CentOS 7 | CentOS 7 | CentOS 7 | CentOS 7 | CentOS 7 |
+| RAM | `512` MB | `512` MB | `512` MB | `512` MB | `512` MB | `512` MB |
+| IP | 192.168.16.105 | 192.168.16.106 | 192.168.16.107 | 192.168.16.108 | 192.168.16.109 | 192.168.16.110 |
 
 ### Implementasi TiDB
 
@@ -239,3 +251,57 @@ Setelah node leader dimatikan, maka coba kembali menjalankan command tersebut. T
 ![Failover](img/failover.png)
 
 ## *Monitoring* Basis Data
+
+### Instalasi
+Untuk melakukan monitoring, pertama kita perlu menjalankan `node_exporter` pada setiap node
+
+```
+cd ~/node_exporter-0.18.1.linux-amd64
+./node_exporter --web.listen-address=":9100" \
+    --log.level="info" &
+```
+
+Kemudian, kita perlu melakukan instalasi Prometheus dan Grafana di `node-1`
+
+```
+wget https://github.com/prometheus/prometheus/releases/download/v2.2.1/prometheus-2.2.1.linux-amd64.tar.gz
+wget https://dl.grafana.com/oss/release/grafana-6.5.1.linux-amd64.tar.gz
+
+tar -xzf prometheus-2.2.1.linux-amd64.tar.gz
+tar -zxf grafana-6.5.1.linux-amd64.tar.gz
+
+cp /vagrant/config/prometheus.yml ~/prometheus-2.2.1.linux-amd64
+cp /vagrant/config/grafana.ini ~/grafana-6.5.1/conf
+```
+
+Untuk menjalankan Prometheus, gunakan command
+
+```
+cd ~/prometheus-2.2.1.linux-amd64
+./prometheus \
+    --config.file="./prometheus.yml" \
+    --web.listen-address=":9090" \
+    --web.external-url="http://192.168.16.105:9090/" \
+    --web.enable-admin-api \
+    --log.level="info" \
+    --storage.tsdb.path="./data.metrics" \
+    --storage.tsdb.retention="15d" &
+```
+
+Untuk menjalankan Grafana, gunakan command
+
+```
+cd ~/grafana-6.5.1
+./bin/grafana-server --config="./conf/grafana.ini" &
+```
+
+### Konfigurasi Grafana
+1. Kunjungi `192.168.16.105:3000` dengan user|pass `admin|admin`
+2. Pada bagian data-source, tambahkan Prometheus sebagai datasource dengan sumber `192.168.16.105:9090` 
+3. Untuk melihat import dashboard, kita dapat menggunakan yang telah disediakan [disini](https://github.com/pingcap/tidb-ansible/tree/master/scripts). Pada tugas ini, yang akan digunakan adalah `tidb.json`, `tidb_summary.json`, dan `tikv_summary.json`.
+
+![TiDB](img/tidb.png)
+
+![TiDB Summary](img/tidb-summary.png)
+
+![TiKV Summary](img/tikv-summary.png)
