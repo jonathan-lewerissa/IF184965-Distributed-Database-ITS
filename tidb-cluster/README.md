@@ -1,5 +1,18 @@
+# EAS Basis Data Terdistribusi
 Jonathan Rehuel Lewerissa
 05111640000105
+
+- [EAS Basis Data Terdistribusi](#eas-basis-data-terdistribusi)
+  - [Deskripsi Tugas](#deskripsi-tugas)
+  - [Desain dan Implementasi Arsitektur TiDB](#desain-dan-implementasi-arsitektur-tidb)
+    - [Desain Arsitektur TiDB](#desain-arsitektur-tidb)
+    - [Implementasi TiDB](#implementasi-tidb)
+  - [Pemanfaatan Basis Data Terdistribusi dalam Aplikasi](#pemanfaatan-basis-data-terdistribusi-dalam-aplikasi)
+  - [Uji Performa Aplikasi dan Basis Data](#uji-performa-aplikasi-dan-basis-data)
+    - [Uji Performa JMeter](#uji-performa-jmeter)
+    - [Uji Performa Sysbench](#uji-performa-sysbench)
+    - [Uji Fail-over](#uji-fail-over)
+  - [Monitoring Basis Data](#monitoring-basis-data)
 
 ## Deskripsi Tugas
 
@@ -127,9 +140,102 @@ Aplikasi yang digunakan pada tugas ini adalah aplikasi CRUD yang dibangun menggu
 
 ### Uji Performa JMeter
 
+Berikut adalah hasil pengujian menggunakan JMeter
 
+![100 Thread](img/jmeter-100.png)
+
+![500 Thread](img/jmeter-500.png)
+
+![1000 Thread](img/jmeter-1000.png)
 
 ### Uji Performa Sysbench
+
+Untuk melakukan pengujian menggunakan `sysbench`, pertama kita perlu melakukan instalasi `sysbench` dan `tidb-bench`
+
+```
+curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.rpm.sh | sudo bash
+sudo yum -y install sysbench
+
+git clone https://github.com/pingcap/tidb-bench.git
+cd tidb-bench/sysbench
+```
+
+Kemudian, edit file konfigurasi yang terdapat pada `config` dan sesuaikan dengan konfigurasi TiDB.
+
+Berikut adalah hasil pengujian sysbench dengan 3 PD Server
+
+```
+SQL statistics:
+    queries performed:
+        read:                            2112403
+        write:                           0
+        other:                           0
+        total:                           2112403
+    transactions:                        2112403 (7040.42 per sec.)
+    queries:                             2112403 (7040.42 per sec.)
+    ignored errors:                      0      (0.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          300.0375s
+    total number of events:              2112403
+
+Latency (ms):
+         min:                                    0.87
+         avg:                                   14.20
+         max:                                  148.78
+         95th percentile:                       24.38
+         sum:                             29995300.38
+
+Threads fairness:
+    events (avg/stddev):           21124.0300/51.50
+    execution time (avg/stddev):   299.9530/0.02
+```
+
+Berikut adalah pengujian sysbench menggunakan 2 PD Server
+
+```
+SQL statistics:
+    queries performed:
+        read:                            2136959
+        write:                           0
+        other:                           0
+        total:                           2136959
+    transactions:                        2136959 (7122.45 per sec.)
+    queries:                             2136959 (7122.45 per sec.)
+    ignored errors:                      0      (0.00 per sec.)
+    reconnects:                          0      (0.00 per sec.)
+
+General statistics:
+    total time:                          300.0298s
+    total number of events:              2136959
+
+Latency (ms):
+         min:                                    1.03
+         avg:                                   14.04
+         max:                                   94.91
+         95th percentile:                       24.38
+         sum:                             29996372.58
+
+Threads fairness:
+    events (avg/stddev):           21369.5900/49.62
+    execution time (avg/stddev):   299.9637/0.01
+```
+
 ### Uji Fail-over
+
+Pertama kita perlu menentukan *leader* dari pd-server untuk menentukan node mana yang menjadi leader dengan menjalankan command 
+
+```
+curl http://192.168.16.105:2379/pd/api/v1/members
+```
+
+![Initial state](img/initial.png)
+
+Node tersebut kemudian akan dimatikan dengan cara `kill -9 <PID>`. Adapun nilai `PID` dapat dicari dengan `ps -aux | grep pd-server`
+
+Setelah node leader dimatikan, maka coba kembali menjalankan command tersebut. Terlihat bahwa node leader sudah digantikan perannya oleh node lain.
+
+![Failover](img/failover.png)
 
 ## *Monitoring* Basis Data

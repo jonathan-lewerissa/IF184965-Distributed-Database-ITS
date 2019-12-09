@@ -11,7 +11,8 @@ sudo cp /vagrant/config/tidb.conf /etc/security/limits.d/
 sudo sysctl -w fs.file-max=1000000
 
 # Copy atau download TiDB binary dari http://download.pingcap.org/tidb-v3.0-linux-amd64.tar.gz
-cp *.tar.gz .
+# Copy atau download TiDB Toolkit dari http://download.pingcap.org/tidb-toolkit-v3.0-linux-amd64.tar.gz
+cp /vagrant/installer/*.tar.gz .
 
 # Extract TiDB binary
 tar -xzf tidb-v3.0-linux-amd64.tar.gz

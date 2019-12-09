@@ -48,4 +48,4 @@ Run on TiDB Server
 
 Import data (jalankan pada node-1)
 
-./tidb-enterprise-tools-latest-linux-amd64/bin/loader -h 127.0.0.1 -u root -P 4000 -t 32 -d /vagrant/dataset-kickstarter-projects/test
+./tidb-enterprise-tools-latest-linux-amd64/bin/loader -h 192.168.16.105 -u root -P 4000 -t 32 -d /vagrant/dataset-kickstarter-projects/test
