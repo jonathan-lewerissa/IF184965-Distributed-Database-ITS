@@ -1,0 +1,46 @@
+# my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+  external_labels:
+    cluster: 'test-cluster'
+    monitor: "prometheus"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'overwritten-nodes'
+    honor_labels: true
+    static_configs:
+      - targets: 
+        - '192.168.16.105:9100'
+        - '192.168.16.106:9100'
+        - '192.168.16.107:9100'
+        - '192.168.16.108:9100'
+        - '192.168.16.109:9100'
+        - '192.168.16.110:9100'
+
+  - job_name: 'tidb'
+    honor_labels: true
+    static_configs:
+      - targets:
+        - '192.168.16.105:10080'
+
+  - job_name: 'pd'
+    honor_labels: true
+    static_configs:
+      - targets:
+        - '192.168.16.105:2379'
+        - '192.168.16.106:2379'
+        - '192.168.16.107:2379'
+
+  - job_name: 'tikv'
+    honor_labels: true
+    static_configs:
+      - targets:
+        - '192.168.16.108:20180'
+        - '192.168.16.109:20180'
+        - '192.168.16.110:20180'
+

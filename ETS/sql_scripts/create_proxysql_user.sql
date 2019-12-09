@@ -1,7 +1,3 @@
-CREATE USER 'monitor'@'%' IDENTIFIED BY 'monitorpassword';
-GRANT SELECT on sys.* to 'monitor'@'%';
-FLUSH PRIVILEGES;
-
-CREATE USER 'reservasiuser'@'%' IDENTIFIED BY 'reservasipassword';
-GRANT ALL PRIVILEGES on reservasi.* to 'reservasiuser'@'%';
-FLUSH PRIVILEGES;
+version https://git-lfs.github.com/spec/v1
+oid sha256:402273f73e87cd2dae6870b3631b2f6ba1a3a036fc980c50147d2aadfc6ab238
+size 268
